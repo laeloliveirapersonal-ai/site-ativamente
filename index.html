@@ -1,0 +1,59 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ativamente — jogos que fazem a mente e o corpo se mexerem</title>
+<style>
+:root{--bg:#0b1d36;--card:#13305a;--line:#ffffff22;--mu:#b9cbe3;--gold:#ffd23f;--ac:#4ce0b2}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,Segoe UI,Roboto,sans-serif;color:#fff;background:linear-gradient(#123a66,var(--bg) 40%)}
+header{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;max-width:1100px;margin:auto}
+.logo{font-weight:900;font-size:26px;letter-spacing:1px}.logo span{color:var(--gold)}
+.ad{max-width:1100px;margin:10px auto;border:2px dashed #ffffff55;border-radius:12px;padding:18px;text-align:center;color:#ffffffaa;font-weight:700;background:#ffffff0a}
+.ad small{display:block;font-weight:500;opacity:.7}
+main{max-width:1100px;margin:auto;padding:0 20px}
+h1{font-size:clamp(26px,4vw,40px);margin:10px 0 4px}p.mu{color:var(--mu);margin:0 0 18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+.g{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px;cursor:pointer;transition:transform .15s}.g:hover{transform:translateY(-4px)}
+.g b{font-size:42px;display:block}.g h3{margin:8px 0 4px}.g p{color:var(--mu);font-size:14px;margin:0 0 10px}
+.pl{font-size:13px;font-weight:800;color:var(--gold)}
+.app{max-width:1100px;margin:26px auto;background:linear-gradient(90deg,#1f7a5a,#2a5fa8);border-radius:24px;padding:22px;display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.app a{background:#000;color:#fff;text-decoration:none;font-weight:900;border-radius:14px;padding:14px 20px}
+footer{max-width:1100px;margin:20px auto;padding:0 20px 30px;color:var(--mu);font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}footer a{color:#fff}
+.ov{position:fixed;inset:0;background:#030b18e8;display:none;align-items:center;justify-content:center;padding:16px;z-index:9}.ov.on{display:flex}
+.pn{background:#13305a;border-radius:24px;padding:24px;width:min(460px,96vw);text-align:center}
+.pn button{width:100%;margin-top:10px;border:0;border-radius:14px;padding:14px;font-weight:900;font-size:16px;cursor:pointer}
+.y{background:var(--gold);color:#3a2600}.n{background:#ffffff18;color:#fff}
+.fake{background:#fff;color:#333;border-radius:14px;height:180px;display:flex;align-items:center;justify-content:center;font-weight:800;margin:12px 0}
+.tag{display:inline-block;font-size:12px;background:#ffffff18;border-radius:8px;padding:4px 8px;margin-top:6px}
+</style></head><body>
+<header><div class="logo">ATIVA<span>MENTE</span></div><span class="tag" id="aud"></span></header>
+<div class="ad">ESPAÇO DE ANÚNCIO (banner do topo)<small id="adType1"></small></div>
+<main><h1>Jogos de movimento no navegador</h1><p class="mu">Jogue com o corpo pela câmera ou com o toque. Sem baixar nada.</p>
+<div class="grid">
+ <div class="g" data-k="corrida" data-h="corrida.html"><b>🏃</b><h3>Corrida dos Mundos</h3><p>Pule, abaixe e desvie em 4 mundos.</p><div class="pl"></div></div>
+ <div class="g" data-k="bolhas" data-h="bolhas.html"><b>🫧</b><h3>Estoura Bolhas</h3><p>Estoure bolhas com as mãos.</p><div class="pl"></div></div>
+ <div class="g" data-k="danca" data-h="danca.html"><b>🕺</b><h3>Dança dos Números</h3><p>Tapete, reação e memória.</p><div class="pl"></div></div>
+</div></main>
+<div class="app"><div><h2 style="margin:0">Leve o Move Mente no tablet</h2><p style="margin:4px 0 0">Funciona sem internet, com mais jogos e sem anúncios no app.</p></div><a href="#" onclick="alert('Aqui vai o link da Google Play');return false">▶ Baixar na Google Play</a></div>
+<div class="ad">ESPAÇO DE ANÚNCIO (banner do rodapé)<small id="adType2"></small></div>
+<footer><span>🔒 A câmera é usada só no aparelho. Nada é gravado.</span><a href="privacidade.html">Política de privacidade</a><a href="#" id="reset">Refazer pergunta de idade (teste)</a></footer>
+<div class="ov" id="age"><div class="pn"><h2>Bem-vindo! 👋</h2><p>Quantos anos você tem?</p>
+<button class="y" data-a="kid">Menos de 13</button><button class="y" data-a="teen">13 a 17</button><button class="y" data-a="adult">18 ou mais</button></div></div>
+<div class="ov" id="lim"><div class="pn"><h2>Suas partidas grátis de hoje acabaram</h2><p>Assista a um anúncio curto para ganhar mais 1 partida, ou volte amanhã.</p>
+<button class="y" id="watch">🎬 Assistir anúncio</button><button class="n" id="noThanks">Agora não</button></div></div>
+<div class="ov" id="adv"><div class="pn"><p>Anúncio simulado</p><div class="fake" id="advTxt">Seu anúncio aqui</div><p id="cnt"></p></div></div>
+<script>
+var FREE=3,$=function(i){return document.getElementById(i)};
+function g(k){try{return localStorage.getItem(k)}catch(e){return null}}function s(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+var TYPES={kid:'Público infantil: anúncios infantis, não personalizados',teen:'13 a 17: anúncios não personalizados',adult:'18+: anúncios normais'};
+function aud(){var a=g('site_age');$('aud').textContent=a?TYPES[a]:'';$('adType1').textContent=$('adType2').textContent=a?'Tipo: '+TYPES[a]:''}
+if(!g('site_age'))$('age').classList.add('on');aud();
+document.querySelectorAll('#age button').forEach(function(b){b.onclick=function(){s('site_age',b.dataset.a);$('age').classList.remove('on');aud()}});
+$('reset').onclick=function(){try{localStorage.removeItem('site_age')}catch(e){}$('age').classList.add('on');return false};
+function day(){return new Date().toISOString().slice(0,10)}
+function used(k){var d=JSON.parse(g('site_plays')||'{}');return d.day===day()?(d[k]||0):0}
+function add(k,n){var d=JSON.parse(g('site_plays')||'{}');if(d.day!==day())d={day:day()};d[k]=(d[k]||0)+n;s('site_plays',JSON.stringify(d))}
+function upd(){document.querySelectorAll('.g').forEach(function(c){var l=FREE-used(c.dataset.k);c.querySelector('.pl').textContent=l>0?'🎟️ '+l+' partidas grátis hoje':'🎬 Assista um anúncio para jogar'})}upd();
+var pend=null;
+document.querySelectorAll('.g').forEach(function(c){c.onclick=function(){if(used(c.dataset.k)<FREE){add(c.dataset.k,1);location.href=c.dataset.h}else{pend=c;$('lim').classList.add('on')}}});
+$('noThanks').onclick=function(){$('lim').classList.remove('on')};
+$('watch').onclick=function(){$('lim').classList.remove('on');$('adv').classList.add('on');var t=5;$('advTxt').textContent=g('site_age')==='kid'?'Anúncio infantil de exemplo':'Anúncio de exemplo';
+ (function tick(){$('cnt').textContent='Liberando em '+t+'s…';if(t--<=0){$('adv').classList.remove('on');location.href=pend.dataset.h}else setTimeout(tick,1000)})()};
+</script></body></html>

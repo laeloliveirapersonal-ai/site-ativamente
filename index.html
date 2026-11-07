@@ -1,59 +1,47 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Ativamente — jogos que fazem a mente e o corpo se mexerem</title>
-<style>
-:root{--bg:#0b1d36;--card:#13305a;--line:#ffffff22;--mu:#b9cbe3;--gold:#ffd23f;--ac:#4ce0b2}
-*{box-sizing:border-box}body{margin:0;font-family:system-ui,Segoe UI,Roboto,sans-serif;color:#fff;background:linear-gradient(#123a66,var(--bg) 40%)}
-header{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;max-width:1100px;margin:auto}
-.logo{font-weight:900;font-size:26px;letter-spacing:1px}.logo span{color:var(--gold)}
-.ad{max-width:1100px;margin:10px auto;border:2px dashed #ffffff55;border-radius:12px;padding:18px;text-align:center;color:#ffffffaa;font-weight:700;background:#ffffff0a}
-.ad small{display:block;font-weight:500;opacity:.7}
-main{max-width:1100px;margin:auto;padding:0 20px}
-h1{font-size:clamp(26px,4vw,40px);margin:10px 0 4px}p.mu{color:var(--mu);margin:0 0 18px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
-.g{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px;cursor:pointer;transition:transform .15s}.g:hover{transform:translateY(-4px)}
-.g b{font-size:42px;display:block}.g h3{margin:8px 0 4px}.g p{color:var(--mu);font-size:14px;margin:0 0 10px}
-.pl{font-size:13px;font-weight:800;color:var(--gold)}
-.app{max-width:1100px;margin:26px auto;background:linear-gradient(90deg,#1f7a5a,#2a5fa8);border-radius:24px;padding:22px;display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap}
-.app a{background:#000;color:#fff;text-decoration:none;font-weight:900;border-radius:14px;padding:14px 20px}
-footer{max-width:1100px;margin:20px auto;padding:0 20px 30px;color:var(--mu);font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}footer a{color:#fff}
-.ov{position:fixed;inset:0;background:#030b18e8;display:none;align-items:center;justify-content:center;padding:16px;z-index:9}.ov.on{display:flex}
-.pn{background:#13305a;border-radius:24px;padding:24px;width:min(460px,96vw);text-align:center}
-.pn button{width:100%;margin-top:10px;border:0;border-radius:14px;padding:14px;font-weight:900;font-size:16px;cursor:pointer}
-.y{background:var(--gold);color:#3a2600}.n{background:#ffffff18;color:#fff}
-.fake{background:#fff;color:#333;border-radius:14px;height:180px;display:flex;align-items:center;justify-content:center;font-weight:800;margin:12px 0}
-.tag{display:inline-block;font-size:12px;background:#ffffff18;border-radius:8px;padding:4px 8px;margin-top:6px}
-</style></head><body>
-<header><div class="logo">ATIVA<span>MENTE</span></div><span class="tag" id="aud"></span></header>
-<div class="ad">ESPAÇO DE ANÚNCIO (banner do topo)<small id="adType1"></small></div>
-<main><h1>Jogos de movimento no navegador</h1><p class="mu">Jogue com o corpo pela câmera ou com o toque. Sem baixar nada.</p>
-<div class="grid">
- <div class="g" data-k="corrida" data-h="corrida.html"><b>🏃</b><h3>Corrida dos Mundos</h3><p>Pule, abaixe e desvie em 4 mundos.</p><div class="pl"></div></div>
- <div class="g" data-k="bolhas" data-h="bolhas.html"><b>🫧</b><h3>Estoura Bolhas</h3><p>Estoure bolhas com as mãos.</p><div class="pl"></div></div>
- <div class="g" data-k="danca" data-h="danca.html"><b>🕺</b><h3>Dança dos Números</h3><p>Tapete, reação e memória.</p><div class="pl"></div></div>
-</div></main>
-<div class="app"><div><h2 style="margin:0">Leve o Move Mente no tablet</h2><p style="margin:4px 0 0">Funciona sem internet, com mais jogos e sem anúncios no app.</p></div><a href="#" onclick="alert('Aqui vai o link da Google Play');return false">▶ Baixar na Google Play</a></div>
-<div class="ad">ESPAÇO DE ANÚNCIO (banner do rodapé)<small id="adType2"></small></div>
-<footer><span>🔒 A câmera é usada só no aparelho. Nada é gravado.</span><a href="privacidade.html">Política de privacidade</a><a href="#" id="reset">Refazer pergunta de idade (teste)</a></footer>
-<div class="ov" id="age"><div class="pn"><h2>Bem-vindo! 👋</h2><p>Quantos anos você tem?</p>
-<button class="y" data-a="kid">Menos de 13</button><button class="y" data-a="teen">13 a 17</button><button class="y" data-a="adult">18 ou mais</button></div></div>
-<div class="ov" id="lim"><div class="pn"><h2>Suas partidas grátis de hoje acabaram</h2><p>Assista a um anúncio curto para ganhar mais 1 partida, ou volte amanhã.</p>
-<button class="y" id="watch">🎬 Assistir anúncio</button><button class="n" id="noThanks">Agora não</button></div></div>
-<div class="ov" id="adv"><div class="pn"><p>Anúncio simulado</p><div class="fake" id="advTxt">Seu anúncio aqui</div><p id="cnt"></p></div></div>
-<script>
-var FREE=3,$=function(i){return document.getElementById(i)};
-function g(k){try{return localStorage.getItem(k)}catch(e){return null}}function s(k,v){try{localStorage.setItem(k,v)}catch(e){}}
-var TYPES={kid:'Público infantil: anúncios infantis, não personalizados',teen:'13 a 17: anúncios não personalizados',adult:'18+: anúncios normais'};
-function aud(){var a=g('site_age');$('aud').textContent=a?TYPES[a]:'';$('adType1').textContent=$('adType2').textContent=a?'Tipo: '+TYPES[a]:''}
-if(!g('site_age'))$('age').classList.add('on');aud();
-document.querySelectorAll('#age button').forEach(function(b){b.onclick=function(){s('site_age',b.dataset.a);$('age').classList.remove('on');aud()}});
-$('reset').onclick=function(){try{localStorage.removeItem('site_age')}catch(e){}$('age').classList.add('on');return false};
-function day(){return new Date().toISOString().slice(0,10)}
-function used(k){var d=JSON.parse(g('site_plays')||'{}');return d.day===day()?(d[k]||0):0}
-function add(k,n){var d=JSON.parse(g('site_plays')||'{}');if(d.day!==day())d={day:day()};d[k]=(d[k]||0)+n;s('site_plays',JSON.stringify(d))}
-function upd(){document.querySelectorAll('.g').forEach(function(c){var l=FREE-used(c.dataset.k);c.querySelector('.pl').textContent=l>0?'🎟️ '+l+' partidas grátis hoje':'🎬 Assista um anúncio para jogar'})}upd();
-var pend=null;
-document.querySelectorAll('.g').forEach(function(c){c.onclick=function(){if(used(c.dataset.k)<FREE){add(c.dataset.k,1);location.href=c.dataset.h}else{pend=c;$('lim').classList.add('on')}}});
-$('noThanks').onclick=function(){$('lim').classList.remove('on')};
-$('watch').onclick=function(){$('lim').classList.remove('on');$('adv').classList.add('on');var t=5;$('advTxt').textContent=g('site_age')==='kid'?'Anúncio infantil de exemplo':'Anúncio de exemplo';
- (function tick(){$('cnt').textContent='Liberando em '+t+'s…';if(t--<=0){$('adv').classList.remove('on');location.href=pend.dataset.h}else setTimeout(tick,1000)})()};
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Ativamente Games — jogos educativos online e grátis para crianças</title><meta name="description" content="Jogos educativos grátis no navegador: raciocínio, atenção, memória, palavras, lateralidade, consciência corporal e jogos de movimento com a câmera. Para casa, escola e terapia."><link rel="canonical" href="https://ativamentegames.netlify.app/">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Ativamente Games"><meta property="og:title" content="Ativamente Games — jogos educativos online e grátis para crianças">
+<meta property="og:description" content="Jogos educativos grátis no navegador: raciocínio, atenção, memória, palavras, lateralidade, consciência corporal e jogos de movimento com a câmera. Para casa, escola e terapia."><meta property="og:image" content="https://ativamentegames.netlify.app/img/og-index.jpg"><meta property="og:url" content="https://ativamentegames.netlify.app/"><meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="ativamente/icon-192.png"><style>:root{--bg:#0b1d36;--card:#13305a;--line:#ffffff22;--mu:#b9cbe3;--gold:#ffd23f;--ac:#4ce0b2}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:#fff;background:linear-gradient(#123a66,var(--bg) 420px) var(--bg)}
+a{color:inherit}header{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 18px;max-width:1180px;margin:auto}
+.logo{font-weight:900;font-size:clamp(22px,4vw,30px);letter-spacing:1px;text-decoration:none}.logo span{color:var(--gold)}.logo small{display:block;font-size:12px;letter-spacing:0;color:var(--mu);font-weight:700}
+.tag{display:inline-block;font-size:12px;background:#ffffff18;border-radius:8px;padding:5px 9px}
+.ad{max-width:1180px;margin:8px auto;border:2px dashed #ffffff55;border-radius:12px;padding:16px;text-align:center;color:#ffffffaa;font-weight:700;background:#ffffff0a}.ad small{display:block;font-weight:500;opacity:.7}
+.ad-real{max-width:1180px;margin:8px auto;min-height:90px;text-align:center}
+main{max-width:1180px;margin:auto;padding:0 18px}
+footer{max-width:1180px;margin:20px auto;padding:0 18px 30px;color:var(--mu);font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}footer a{color:#fff}footer .links{display:flex;gap:14px;flex-wrap:wrap}h1{font-size:clamp(24px,4vw,38px);margin:12px 0 4px}p.mu{color:var(--mu);margin:0 0 14px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 16px}.chip{border:1px solid #ffffff40;background:#ffffff10;color:#fff;border-radius:999px;padding:10px 16px;font-weight:800;font-size:14px;cursor:pointer;font-family:inherit}.chip.on{background:var(--gold);color:#3a2600;border-color:var(--gold)}
+h2{margin:22px 0 10px;font-size:22px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}h2 small{font-size:13px;color:var(--mu);font-weight:600}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
+.g{background:var(--card);border:1px solid var(--line);border-radius:20px;overflow:hidden;display:flex;flex-direction:column;transition:transform .15s}.g:hover{transform:translateY(-4px)}
+.g .open{border:0;padding:0;background:none;color:#fff;text-align:left;cursor:pointer;font-family:inherit;display:block;width:100%}
+.cap{aspect-ratio:420/345;width:100%;background:#fff center/contain no-repeat}
+.inf{padding:10px 12px 4px}.inf h3{margin:0 0 3px;font-size:17px}.inf p{color:var(--mu);font-size:13px;margin:0 0 8px;line-height:1.3}
+.bot{display:flex;justify-content:space-between;align-items:center;padding:0 12px 12px;gap:6px}.pl{font-size:12px;font-weight:800;color:var(--gold)}.more{font-size:12px;font-weight:800;text-decoration:none;border:1px solid #ffffff40;border-radius:10px;padding:5px 9px;white-space:nowrap}
+.hide{display:none!important}.esc{background:#ffffff0c;border:1px solid var(--line);border-radius:20px;padding:6px 18px 12px;margin-top:24px}.esc p{line-height:1.55;color:var(--mu)}
+.apps{max-width:1180px;margin:26px auto;padding:0 18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.app{border-radius:22px;padding:20px;display:flex;flex-direction:column;gap:8px}.app h3{margin:0}.app p{margin:0 0 6px;opacity:.9}
+.app a,.app span.btn{align-self:flex-start;background:#000;color:#fff;text-decoration:none;font-weight:900;border-radius:14px;padding:12px 18px}</style><script src="anuncios-config.js"></script><script src="anuncios.js"></script><script src="site.js"></script></head><body><header><a class="logo" href="index.html">ATIVA<span>MENTE</span> GAMES<small>jogos para a mente e o corpo</small></a><span class="tag" id="aud"></span></header><div class="ad" id="adTop">ESPAÇO DE ANÚNCIO (banner do topo)<small id="adType1"></small></div>
+<main><h1>Jogos educativos online e grátis</h1><p class="mu">Raciocínio, atenção, palavras, corpo e movimento para crianças. Direto no navegador, sem baixar nada.</p>
+<div class="chips" id="chips"><button class="chip on" data-c="all">Todos</button><button class="chip" data-c="mov">🏃 Movimento</button><button class="chip" data-c="rac">🧩 Raciocínio</button><button class="chip" data-c="ate">⚡ Atenção</button><button class="chip" data-c="pal">🔤 Palavras</button><button class="chip" data-c="cor">🧍 Corpo e emoções</button></div>
+<h2 id="hMove">🏃 Move Mente <small>jogos com o corpo pela câmera</small></h2><div class="grid" id="gMove"></div>
+<h2 id="hAtv">🧠 Ativamente <small>jogos para a mente</small></h2><div class="grid" id="gAtv"></div>
+<section class="esc"><h2>👩‍🏫 Para escolas e terapeutas</h2><p>Os jogos foram pensados com base na psicomotricidade e na educação física. Muitos mostram um relatório no fim da partida — acertos, tempo de reação, mãos usadas — para acompanhar a evolução. Os jogos Move Mente funcionam ligados na TV, com a turma toda se movimentando. Quer usar com seus alunos ou pacientes? <a href="contato.html">Fale com a gente</a>.</p></section>
+</main>
+<div class="apps"><div class="app" style="background:linear-gradient(120deg,#1f7a5a,#2a5fa8)"><h3>📱 Ativamente na Google Play</h3><p>Todos os jogos no tablet ou celular, funcionando sem internet.</p><a href="https://play.google.com/store/apps/details?id=com.damas.ativamente" target="_blank" rel="noopener">▶ Baixar na Google Play</a></div>
+<div class="app" style="background:linear-gradient(120deg,#c8341c,#7a3fd0)"><h3>🏃 Move Mente</h3><p>Os jogos de movimento em app próprio.</p><span class="btn">Em breve</span></div></div>
+<div class="ad" id="adBottom">ESPAÇO DE ANÚNCIO (banner do rodapé)<small id="adType2"></small></div><footer><span>🔒 A câmera é usada só no aparelho. Nada é gravado.</span><span class="links"><a href="sobre.html">Sobre</a><a href="contato.html">Contato</a><a href="privacidade.html">Política de privacidade</a><a href="#" onclick="Site.refazerIdade();return false">Refazer pergunta de idade</a></span></footer><script>function aud(){var t=Site.tipo();document.getElementById('aud').textContent=t;['adType1','adType2'].forEach(function(i){var x=document.getElementById(i);if(x)x.textContent=t?'Tipo: '+t:''})}Site.aoMudar(aud);</script><script>
+var J=[{"id": "corrida", "nome": "Corrida dos Mundos", "desc": "Pule, abaixe e desvie em 4 mundos.", "href": "corrida.html", "capa": "img/capa-corrida.webp", "cat": "mov", "pag": "jogo-corrida.html", "idade": "5+", "mm": true}, {"id": "bolhas", "nome": "Estoura Bolhas", "desc": "Estoure bolhas com as mãos.", "href": "bolhas.html", "capa": "img/capa-bolhas.webp", "cat": "mov", "pag": "jogo-bolhas.html", "idade": "3+", "mm": true}, {"id": "danca", "nome": "Dança dos Números", "desc": "Tapete, reação e memória.", "href": "danca.html", "capa": "img/capa-danca.webp", "cat": "mov", "pag": "jogo-danca.html", "idade": "4+", "mm": true}, {"id": "destrava", "nome": "Destrava!", "desc": "Deslize os blocos e liberte o bloco rosa.", "href": "jogar.html?g=ativamente/destrava.html&t=Destrava%21", "capa": "ativamente/capas/destrava.webp", "cat": "rac", "pag": "jogo-destrava.html", "idade": "6+", "mm": false}, {"id": "trava-letras", "nome": "Trava Letras", "desc": "Diga palavras por categoria antes do tempo acabar.", "href": "jogar.html?g=ativamente/trava-letras.html&t=Trava%20Letras", "capa": "ativamente/capas/trava-letras.webp", "cat": "pal", "pag": "jogo-trava-letras.html", "idade": "7+", "mm": false}, {"id": "cores-setas", "nome": "Cores & Setas", "desc": "Toque no círculo da cor certa.", "href": "jogar.html?g=ativamente/cores-setas.html&t=Cores%20%26%20Setas", "capa": "ativamente/capas/cores-setas.webp", "cat": "ate", "pag": "jogo-cores-setas.html", "idade": "5+", "mm": false}, {"id": "setas-4direcoes", "nome": "Setas 4 Direções", "desc": "Acompanhe a seta por 2 minutos.", "href": "jogar.html?g=ativamente/setas-4direcoes.html&t=Setas%204%20Dire%C3%A7%C3%B5es", "capa": "ativamente/capas/setas-4direcoes.webp", "cat": "ate", "pag": "jogo-setas-4direcoes.html", "idade": "4+", "mm": false}, {"id": "genius-square", "nome": "Genius Square", "desc": "Encaixe as 9 peças sem cobrir os bloqueadores.", "href": "jogar.html?g=ativamente/genius-square.html&t=Genius%20Square", "capa": "ativamente/capas/genius-square.webp", "cat": "rac", "pag": "jogo-genius-square.html", "idade": "7+", "mm": false}, {"id": "quebra-cabeca", "nome": "Quebra-Cabeça", "desc": "Monte as peças e treine a atenção.", "href": "jogar.html?g=ativamente/quebra-cabeca.html&t=Quebra-Cabe%C3%A7a", "capa": "ativamente/capas/quebra-cabeca.webp", "cat": "rac", "pag": "jogo-quebra-cabeca.html", "idade": "4+", "mm": false}, {"id": "memoria-ativa", "nome": "Memória Ativa", "desc": "Encontre os pares e treine a memória.", "href": "jogar.html?g=ativamente/memoria-ativa.html&t=Mem%C3%B3ria%20Ativa", "capa": "ativamente/capas/memoria-ativa.webp", "cat": "ate", "pag": "jogo-memoria-ativa.html", "idade": "4+", "mm": false}, {"id": "damas", "nome": "Damas", "desc": "Capture as peças e vire dama.", "href": "jogar.html?g=ativamente/damas.html&t=Damas", "capa": "ativamente/capas/damas.webp", "cat": "rac", "pag": "jogo-damas.html", "idade": "7+", "mm": false}, {"id": "xadrez-ativamente", "nome": "Xadrez Ativamente", "desc": "Estratégia, planejamento e raciocínio.", "href": "jogar.html?g=ativamente/Xadrez-Ativamente-Premium-3.6.html&t=Xadrez%20Ativamente", "capa": "ativamente/capas/xadrez-ativamente.webp", "cat": "rac", "pag": "jogo-xadrez-ativamente.html", "idade": "7+", "mm": false}, {"id": "conhecendo-o-corpo", "nome": "Conhecendo o Corpo", "desc": "Explore o corpo e a consciência corporal.", "href": "jogar.html?g=ativamente/conhecendo-o-corpo.html&t=Conhecendo%20o%20Corpo", "capa": "ativamente/capas/conhecendo-o-corpo.webp", "cat": "cor", "pag": "jogo-conhecendo-o-corpo.html", "idade": "3+", "mm": false}, {"id": "jogo-das-palavras", "nome": "Jogo das Palavras", "desc": "Monte palavras com letras e sílabas.", "href": "jogar.html?g=ativamente/jogo-das-palavras.html&t=Jogo%20das%20Palavras", "capa": "ativamente/capas/jogo-das-palavras.jpg", "cat": "pal", "pag": "jogo-jogo-das-palavras.html", "idade": "5+", "mm": false}, {"id": "lateralidade", "nome": "Direita ou Esquerda", "desc": "Mãos, lados e espelho.", "href": "jogar.html?g=ativamente/lateralidade.html&t=Direita%20ou%20Esquerda", "capa": "ativamente/capa-lateralidade.webp", "cat": "cor", "pag": "jogo-lateralidade.html", "idade": "5+", "mm": false}, {"id": "siga-o-traco", "nome": "Siga o Traço", "desc": "Coordenação motora fina e pré-escrita.", "href": "jogar.html?g=ativamente/siga-o-traco.html&t=Siga%20o%20Tra%C3%A7o", "capa": "ativamente/capa-siga-o-traco.webp", "cat": "cor", "pag": "jogo-siga-o-traco.html", "idade": "3+", "mm": false}, {"id": "labirinto", "nome": "Labirinto", "desc": "Planejamento e coordenação visomotora.", "href": "jogar.html?g=ativamente/labirinto.html&t=Labirinto", "capa": "ativamente/capa-labirinto.webp", "cat": "rac", "pag": "jogo-labirinto.html", "idade": "4+", "mm": false}, {"id": "sinal-verde", "nome": "Sinal Verde", "desc": "Atenção e controle do impulso.", "href": "jogar.html?g=ativamente/sinal-verde.html&t=Sinal%20Verde", "capa": "ativamente/capa-sinal-verde.webp", "cat": "ate", "pag": "jogo-sinal-verde.html", "idade": "4+", "mm": false}, {"id": "emocoes", "nome": "Que Emoção é Essa?", "desc": "Reconhecer emoções e sentimentos.", "href": "jogar.html?g=ativamente/emocoes.html&t=Que%20Emo%C3%A7%C3%A3o%20%C3%A9%20Essa%3F", "capa": "ativamente/capa-emocoes.webp", "cat": "cor", "pag": "jogo-emocoes.html", "idade": "4+", "mm": false}];
+function card(j){var d=document.createElement('div');d.className='g';d.dataset.c=j.cat;d.dataset.k=j.id;
+ d.innerHTML='<button class="open"><div class="cap"></div><div class="inf"><h3></h3><p></p></div></button><div class="bot"><span class="pl"></span><a class="more">ℹ️ Saiba mais</a></div>';
+ d.querySelector('.cap').style.backgroundImage='url('+j.capa+')';d.querySelector('h3').textContent=j.nome;d.querySelector('p').textContent=j.desc+' · '+j.idade+' anos';
+ d.querySelector('.more').href=j.pag;d.querySelector('.open').onclick=function(){Site.jogar(j.id,j.href)};return d}
+J.forEach(function(j){document.getElementById(j.mm?'gMove':'gAtv').appendChild(card(j))});
+function pl(){document.querySelectorAll('.g').forEach(function(c){var l=Site.restantes(c.dataset.k);c.querySelector('.pl').textContent=l>0?'🎟️ '+l+' grátis hoje':'🎬 Assista para jogar'})}
+Site.aoMudar(pl);
+document.querySelectorAll('.chip').forEach(function(c){c.onclick=function(){document.querySelectorAll('.chip').forEach(function(x){x.classList.toggle('on',x===c)});var k=c.dataset.c;
+ document.querySelectorAll('.g').forEach(function(x){x.classList.toggle('hide',k!=='all'&&x.dataset.c!==k)});
+ ['hMove','gMove'].forEach(function(i){document.getElementById(i).classList.toggle('hide',k!=='all'&&k!=='mov')});
+ ['hAtv','gAtv'].forEach(function(i){document.getElementById(i).classList.toggle('hide',k==='mov')})}});
 </script></body></html>

@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /jogar.html
+
+Sitemap: https://ativamentegames.netlify.app/sitemap.xml

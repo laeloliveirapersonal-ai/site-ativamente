@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>Cores & Setas</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}html,body{width:100%;height:100%;overflow:hidden;touch-action:manipulation;font-family:'Segoe UI',system-ui,sans-serif;background:#0b0f1a;color:#fff}#app{width:100vw;height:100vh;height:100dvh;background:radial-gradient(circle at 50% 20%,#1a2340,#0b0f1a 80%)}#aviso-paisagem{display:none;position:fixed;inset:0;z-index:9999;align-items:center;justify-content:center;flex-direction:column;padding:30px;text-align:center;background:radial-gradient(circle at center,#1a2340,#0b0f1a 80%)}#aviso-paisagem .icone{font-size:70px;margin-bottom:20px;animation:girar 1.8s ease-in-out infinite}#aviso-paisagem h2{font-size:28px;margin-bottom:10px}#aviso-paisagem p{color:#8a92b4;font-size:17px;max-width:320px;line-height:1.5}@keyframes girar{0%,100%{transform:rotate(0)}50%{transform:rotate(90deg)}}.screen{display:none;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;padding:20px;opacity:0;transition:opacity .3s}.screen.active{display:flex;opacity:1;overflow-y:auto}.titulo{font-size:clamp(32px,7vw,56px);font-weight:700;text-align:center;background:linear-gradient(135deg,#4c8dff,#3ddc97,#ffc93c,#ff5468);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:8px}.subtitulo{font-size:clamp(16px,2.5vw,22px);color:#8a92b4;text-align:center;max-width:500px;margin-bottom:16px;line-height:1.3}.btn{font-size:clamp(18px,2.8vw,24px);font-weight:600;padding:12px 40px;border:0;border-radius:60px;background:#1d2340;color:#f4f6ff;cursor:pointer;transition:transform .1s,box-shadow .2s;box-shadow:0 6px 0 #0b0f1a;min-width:200px;margin:4px 0;touch-action:manipulation}.btn:active{transform:translateY(4px);box-shadow:0 2px 0 #0b0f1a}.btn.primario{background:linear-gradient(135deg,#4c8dff,#3ddc97);color:#0b0f1a;box-shadow:0 6px 0 #1f5a3e}.dificuldades{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:10px 0 8px}.btn-dificuldade{font-size:16px;font-weight:700;padding:10px 18px;border:2px solid #ffffff18;border-radius:30px;background:#161b30;color:#8a92b4;cursor:pointer;transition:.15s}.btn-dificuldade.selecionado{color:#0b0f1a;border-color:transparent;box-shadow:0 0 18px #ffffff22}.btn-dificuldade.facil.selecionado{background:#3ddc97}.btn-dificuldade.medio.selecionado{background:#ffc93c}.btn-dificuldade.dificil.selecionado{background:#ff5468}.recorde{margin-top:12px;font-size:18px;background:#ffc93c1a;border:1px solid #ffc93c4d;padding:8px 24px;border-radius:40px;color:#ffc93c}.painel,.painel-fim{background:#161b30;border-radius:28px;padding:30px 28px;max-width:520px;width:100%;border:1px solid #ffffff0d;max-height:80vh;overflow-y:auto}.painel h2{font-size:24px;margin-bottom:14px}.painel p{color:#8a92b4;font-size:16px;line-height:1.6;margin-bottom:12px}.exemplo{display:flex;flex-wrap:wrap;gap:12px;margin:16px 0;justify-content:center}.exemplo-item{display:flex;align-items:center;gap:6px;background:#1d2340;padding:6px 14px 6px 8px;border-radius:40px;font-size:14px}.bolinha-ex{width:28px;height:28px;border-radius:50%}.btn-voltar{margin-top:20px}#screen-jogo{padding:10px 8px;flex-direction:row;align-items:stretch;justify-content:space-between;gap:8px}.area-central{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;min-width:0}.hud{display:flex;gap:16px;margin-bottom:10px;flex-wrap:wrap;justify-content:center}.hud-item{background:#161b30;border-radius:16px;padding:6px 18px;text-align:center;border:1px solid #ffffff0d}.hud-item .label{font-size:11px;color:#8a92b4;letter-spacing:1px;display:block}.hud-item .value{font-size:clamp(20px,4vw,32px);font-weight:700}.gold{color:#ffc93c}.btn-sair{width:36px;height:36px;border-radius:50%;border:1px solid #ffffff1f;background:#161b30;color:#8a92b4;font-size:16px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;touch-action:manipulation}.btn-sair:active{transform:scale(.9);background:#1d2340}.anel-seta{position:relative;width:min(52vh,42vw,360px);height:min(52vh,42vw,360px);display:flex;align-items:center;justify-content:center}.anel-svg{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}.anel-fundo{fill:none;stroke:#ffffff14;stroke-width:6}.anel-progresso{fill:none;stroke-width:6;stroke-linecap:round;filter:drop-shadow(0 0 8px #4c8dff80)}.seta-container{position:relative;z-index:2;width:82%;height:42%;display:flex;align-items:center;justify-content:center;filter:drop-shadow(0 0 25px #4c8dff73)}.seta{width:100%;height:100%;display:flex;align-items:center;justify-content:center;position:relative;clip-path:polygon(0 25%,62% 25%,62% 0,100% 50%,62% 100%,62% 75%,0 75%);color:#0b0f1a;font-size:clamp(20px,3vw,34px);font-weight:900;letter-spacing:1px;text-transform:uppercase;text-align:center}.seta-texto{position:relative;z-index:3;white-space:nowrap}.seta-container.esquerda{transform:scaleX(-1)}.seta-container.esquerda .seta-texto{transform:scaleX(-1)}.seta-container.entrando{animation:entrada var(--dur,1000ms) cubic-bezier(.2,1.2,.4,1) forwards}@keyframes entrada{0%{opacity:0;transform:scale(.35)}100%{opacity:1;transform:scale(1)}}.seta-container.esquerda.entrando{animation:entradaE var(--dur,1000ms) cubic-bezier(.2,1.2,.4,1) forwards}@keyframes entradaE{0%{opacity:0;transform:scaleX(-1) scale(.35)}100%{opacity:1;transform:scaleX(-1) scale(1)}}.feedback-texto{position:absolute;top:2%;font-size:clamp(24px,5vw,36px);font-weight:700;pointer-events:none;opacity:0;text-shadow:0 0 30px currentColor;z-index:5}.acerto{color:#3ddc97}.erro{color:#ff5468}.mostrar{animation:pop .8s ease forwards}@keyframes pop{0%{opacity:0;transform:translateY(10px) scale(.8)}25%{opacity:1;transform:translateY(0) scale(1.1)}70%{opacity:1}100%{opacity:0;transform:translateY(-20px)}}.particula{position:absolute;width:12px;height:12px;border-radius:50%;left:50%;top:50%;pointer-events:none;animation:explodir .7s ease-out forwards;z-index:10}@keyframes explodir{to{transform:translate(var(--px),var(--py)) scale(0);opacity:0}}.lado{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:0 4px;flex:0 0 auto;width:34vw;max-width:190px;min-width:120px}.legenda{font-size:14px;font-weight:600;color:#8a92b4;letter-spacing:2px;margin-bottom:4px}.grid-circulos{display:grid;grid-template-columns:1fr 1fr;gap:10%;justify-items:center;align-items:center;width:100%}.circulo-resposta{width:100%;aspect-ratio:1/1;max-width:100px;border-radius:50%;border:3px solid #ffffff26;cursor:pointer;transition:transform .1s,box-shadow .15s;touch-action:manipulation;box-shadow:0 4px 12px #0006}.circulo-resposta:active{transform:scale(.88)}.azul{background:radial-gradient(circle at 35% 35%,#7ab0ff,#4c8dff);box-shadow:0 0 20px #4c8dff40}.vermelho{background:radial-gradient(circle at 35% 35%,#ff8a9a,#ff5468);box-shadow:0 0 20px #ff546840}.amarelo{background:#ffc93c;box-shadow:0 0 20px #ffc93c40}.verde{background:radial-gradient(circle at 35% 35%,#7ae8b5,#3ddc97);box-shadow:0 0 20px #3ddc9740}.painel-fim{text-align:center;max-width:420px;padding:28px 24px}.painel-fim h2{font-size:28px;color:#ff5468;margin-bottom:4px}.novo-recorde{color:#ffc93c;font-size:18px;display:none;margin-bottom:12px}.novo-recorde.mostrar{display:block}.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0}.stat{background:#1d2340;border-radius:16px;padding:12px 6px}.stat .label{font-size:12px;color:#8a92b4}.stat .value{font-size:24px;font-weight:700;margin-top:2px}.stat.destaque .value{color:#ffc93c}.fim-botoes{display:flex;flex-direction:column;gap:12px;margin-top:8px}@media(orientation:portrait){#aviso-paisagem{display:flex}#app{display:none}}
+
+/* ===== LAYOUT NOVO — Cores & Setas ===== */
+:root{
+  --bg:#070b14;
+  --panel:#111827;
+  --panel2:#172033;
+  --text:#f7f9ff;
+  --muted:#8e9ab5;
+  --line:rgba(255,255,255,.09);
+}
+html,body{
+  background:var(--bg);
+}
+#app{
+  background:
+    radial-gradient(circle at 50% 0%,rgba(76,141,255,.18),transparent 34%),
+    radial-gradient(circle at 0% 100%,rgba(61,220,151,.09),transparent 30%),
+    radial-gradient(circle at 100% 100%,rgba(255,84,104,.08),transparent 30%),
+    #070b14;
+}
+.screen{
+  padding:clamp(14px,2vw,28px);
+}
+
+/* MENU */
+#screen-menu{
+  position:relative;
+  justify-content:center;
+  gap:0;
+}
+#screen-menu:before{
+  content:"";
+  position:absolute;
+  width:min(620px,85vw);
+  height:min(620px,85vw);
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(76,141,255,.09),transparent 68%);
+  pointer-events:none;
+}
+#screen-menu > img{
+  width:clamp(64px,8vw,92px)!important;
+  height:clamp(64px,8vw,92px)!important;
+  margin-bottom:12px!important;
+  border:3px solid rgba(255,255,255,.12);
+  box-shadow:0 14px 45px rgba(0,0,0,.45)!important;
+  position:relative;
+}
+.titulo{
+  font-size:clamp(38px,6vw,66px);
+  line-height:1;
+  letter-spacing:-2px;
+  margin-bottom:12px;
+  position:relative;
+}
+.subtitulo{
+  max-width:560px;
+  margin-bottom:20px;
+  color:#aab4cc;
+}
+#screen-menu > div[style]{
+  margin-top:4px;
+  color:#687590!important;
+  font-size:11px!important;
+  letter-spacing:2px!important;
+}
+.dificuldades{
+  gap:8px;
+  margin:8px 0 18px;
+}
+.btn-dificuldade{
+  min-width:118px;
+  padding:11px 18px;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.1);
+  backdrop-filter:blur(10px);
+}
+.btn-dificuldade.selecionado{
+  transform:translateY(-2px);
+}
+.btn{
+  min-width:260px;
+  padding:15px 36px;
+  border-radius:16px;
+  margin:5px 0;
+  box-shadow:0 7px 0 rgba(0,0,0,.28);
+}
+.btn.primario{
+  box-shadow:0 7px 0 #164f42,0 0 30px rgba(61,220,151,.12);
+}
+.recorde{
+  margin-top:18px;
+  background:rgba(255,201,60,.07);
+  border:1px solid rgba(255,201,60,.2);
+  padding:9px 20px;
+  font-size:14px;
+}
+
+/* INSTRUÇÕES / FIM */
+.painel,.painel-fim{
+  background:linear-gradient(145deg,rgba(23,32,51,.96),rgba(14,20,34,.96));
+  border:1px solid var(--line);
+  box-shadow:0 25px 70px rgba(0,0,0,.38);
+  backdrop-filter:blur(16px);
+}
+.painel h2,.painel-fim h2{
+  letter-spacing:-.5px;
+}
+
+/* JOGO */
+#screen-jogo{
+  padding:10px clamp(12px,2vw,28px);
+  gap:clamp(12px,2vw,30px);
+  background:
+    radial-gradient(circle at 50% 50%,rgba(76,141,255,.055),transparent 38%);
+}
+#screen-jogo .lado{
+  width:clamp(150px,18vw,240px);
+  max-width:240px;
+  min-width:150px;
+  padding:12px;
+  border-radius:26px;
+  background:linear-gradient(145deg,rgba(23,32,51,.82),rgba(13,19,31,.82));
+  border:1px solid rgba(255,255,255,.07);
+  box-shadow:0 18px 50px rgba(0,0,0,.25);
+}
+.legenda{
+  width:100%;
+  padding:9px 8px;
+  border-radius:12px;
+  background:rgba(255,255,255,.045);
+  color:#b5bfd4;
+  font-size:12px;
+  letter-spacing:1.5px;
+  text-align:center;
+}
+.grid-circulos{
+  gap:14px;
+  padding:8px 2px;
+}
+.circulo-resposta{
+  width:clamp(62px,7vw,92px);
+  max-width:none;
+  border:4px solid rgba(255,255,255,.12);
+  box-shadow:0 9px 20px rgba(0,0,0,.3);
+}
+.circulo-resposta:hover{
+  transform:translateY(-3px) scale(1.04);
+}
+.area-central{
+  gap:8px;
+}
+.hud{
+  width:100%;
+  max-width:650px;
+  gap:8px;
+  margin-bottom:4px;
+  flex-wrap:nowrap;
+}
+.hud-item{
+  flex:1;
+  min-width:82px;
+  padding:8px 10px;
+  border-radius:14px;
+  background:rgba(17,24,39,.88);
+  border:1px solid rgba(255,255,255,.08);
+  box-shadow:0 8px 25px rgba(0,0,0,.2);
+}
+.hud-item .label{
+  font-size:9px;
+  color:#71809d;
+  letter-spacing:1.2px;
+}
+.hud-item .value{
+  font-size:clamp(18px,3vw,27px);
+  line-height:1.15;
+}
+.btn-sair{
+  flex:0 0 38px;
+  width:38px;
+  height:38px;
+  background:rgba(255,84,104,.08);
+  border-color:rgba(255,84,104,.2);
+  color:#ff7c8b;
+}
+.anel-seta{
+  width:min(58vh,46vw,430px);
+  height:min(58vh,46vw,430px);
+  margin:0 auto;
+}
+.anel-fundo{
+  stroke:rgba(255,255,255,.08);
+  stroke-width:5;
+}
+.anel-progresso{
+  stroke-width:7;
+  filter:drop-shadow(0 0 10px currentColor);
+}
+.seta-container{
+  width:84%;
+  height:40%;
+}
+.seta{
+  font-size:clamp(20px,3.2vw,38px);
+  box-shadow:0 15px 35px rgba(0,0,0,.25);
+}
+.feedback-texto{
+  top:0;
+  font-size:clamp(25px,4vw,40px);
+}
+
+/* FIM */
+.painel-fim{
+  width:min(440px,94vw);
+}
+.stats{
+  gap:10px;
+}
+.stat{
+  padding:14px 8px;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.05);
+}
+.fim-botoes{
+  gap:8px;
+}
+
+/* TABLET / TELAS MENORES EM PAISAGEM */
+@media (max-height:620px) and (orientation:landscape){
+  #screen-jogo{padding:7px 12px}
+  #screen-jogo .lado{padding:8px;width:clamp(135px,17vw,190px);min-width:135px}
+  .grid-circulos{gap:9px}
+  .circulo-resposta{width:clamp(52px,8vh,72px)}
+  .anel-seta{width:min(62vh,42vw,330px);height:min(62vh,42vw,330px)}
+  .hud-item{padding:5px 8px}
+  .hud-item .label{font-size:8px}
+  .hud-item .value{font-size:19px}
+}
+
+/* TELAS GRANDES */
+@media (min-width:1100px) and (orientation:landscape){
+  #screen-jogo{padding-left:3vw;padding-right:3vw}
+  #screen-jogo .lado{width:clamp(190px,18vw,260px)}
+  .circulo-resposta{width:clamp(78px,7vw,105px)}
+}
+
+/* REDUZ MOVIMENTO */
+@media (prefers-reduced-motion:reduce){
+  *,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+
+</style><link rel="stylesheet" href="./responsivo-dispositivos.css">
+<script src="ajustes.js"></script>
+<script src="i18n.js"></script>
+<script src="i18n-cores-setas.js"></script>
+</head>
+<body>
+<div id="aviso-paisagem"><div class="icone">📱</div><h2>Vire o celular</h2><p>Este jogo foi desenvolvido exclusivamente para jogar no modo paisagem.</p></div>
+<div id="app">
+<section id="screen-menu" class="screen active"><img src="data:image/webp;base64,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" alt="Ativamente Games" style="width:52px;height:52px;border-radius:50%;margin-bottom:6px;box-shadow:0 4px 16px #0006"><h1 class="titulo">🌈 Cores & Setas</h1><p class="subtitulo">Toque no círculo da mesma cor que a seta, no lado certo!</p><div style="color:#8a92b4;font-size:14px;font-weight:700;letter-spacing:1px;margin-bottom:4px">DIFICULDADE</div>
+<div class="dificuldades">
+<button class="btn-dificuldade facil selecionado" data-dificuldade="facil">🟢 FÁCIL</button>
+<button class="btn-dificuldade medio" data-dificuldade="medio">🟡 MÉDIO</button>
+<button class="btn-dificuldade dificil" data-dificuldade="dificil">🔴 DIFÍCIL</button>
+</div>
+<button class="btn primario" id="btn-jogar">JOGAR</button><button class="btn" id="btn-como-jogar">COMO JOGAR</button>
+<div class="recorde">🏆 RECORDE <span id="nome-dificuldade-recorde">FÁCIL</span>: <span id="menu-recorde">00000</span></div></section>
+<section id="screen-instrucoes" class="screen"><div class="painel"><h2>📖 Como jogar</h2><p>Uma <strong>seta colorida</strong> aparece no centro. Ela aponta para a <strong>esquerda</strong> ou para a <strong>direita</strong>.</p><p>Toque no <strong>círculo da mesma cor</strong> que está no <strong>mesmo lado</strong> da direção da seta.</p><div class="exemplo"><span class="exemplo-item"><span class="bolinha-ex" style="background:#4c8dff"></span>Azul ←</span><span class="exemplo-item"><span class="bolinha-ex" style="background:#4c8dff"></span>Azul →</span><span class="exemplo-item"><span class="bolinha-ex" style="background:#ff5468"></span>Vermelho ←</span><span class="exemplo-item"><span class="bolinha-ex" style="background:#ff5468"></span>Vermelho →</span><span class="exemplo-item"><span class="bolinha-ex" style="background:#ffc93c"></span>Amarelo ←</span><span class="exemplo-item"><span class="bolinha-ex" style="background:#ffc93c"></span>Amarelo →</span><span class="exemplo-item"><span class="bolinha-ex" style="background:#3ddc97"></span>Verde ←</span><span class="exemplo-item"><span class="bolinha-ex" style="background:#3ddc97"></span>Verde →</span></div><p>Acertos rápidos dão mais pontos. O combo aumenta a pontuação. Erro ou tempo esgotado encerra a partida.</p><p><strong>Dica:</strong> Use ← e → no teclado.</p><button class="btn btn-voltar" id="btn-voltar-instrucoes">VOLTAR</button></div></section>
+<section id="screen-jogo" class="screen">
+<div class="lado"><div class="legenda">← ESQUERDA</div><div class="grid-circulos"><div class="circulo-resposta azul" data-cor="azul" data-direcao="esquerda"></div><div class="circulo-resposta vermelho" data-cor="vermelho" data-direcao="esquerda"></div><div class="circulo-resposta amarelo" data-cor="amarelo" data-direcao="esquerda"></div><div class="circulo-resposta verde" data-cor="verde" data-direcao="esquerda"></div></div></div>
+<div class="area-central"><div class="hud"><button class="btn-sair" id="btn-sair-jogo" aria-label="Voltar ao menu">✕</button><div class="hud-item"><span class="label">DIFICULDADE</span><span class="value" id="valor-dificuldade" style="font-size:16px">FÁCIL</span></div><div class="hud-item"><span class="label">PONTOS</span><span class="value" id="valor-pontos">00000</span></div><div class="hud-item"><span class="label">COMBO</span><span class="value gold" id="valor-combo">00</span></div><div class="hud-item"><span class="label">RECORDE</span><span class="value" id="valor-recorde">00000</span></div></div><div class="anel-seta"><svg class="anel-svg" viewBox="0 0 100 100"><circle class="anel-fundo" cx="50" cy="50" r="44"></circle><circle class="anel-progresso" id="anel-progresso" cx="50" cy="50" r="44"></circle></svg><div class="seta-container" id="seta-container"><div class="seta" id="seta"><span class="seta-texto" id="seta-texto">DIREITA</span></div></div><div class="feedback-texto" id="feedback-texto"></div></div></div>
+<div class="lado"><div class="legenda">DIREITA →</div><div class="grid-circulos"><div class="circulo-resposta azul" data-cor="azul" data-direcao="direita"></div><div class="circulo-resposta vermelho" data-cor="vermelho" data-direcao="direita"></div><div class="circulo-resposta amarelo" data-cor="amarelo" data-direcao="direita"></div><div class="circulo-resposta verde" data-cor="verde" data-direcao="direita"></div></div></div>
+</section>
+<section id="screen-fim" class="screen"><div class="painel-fim"><h2>⏰ FIM DE JOGO</h2><div class="novo-recorde" id="novo-recorde-texto">🏆 NOVO RECORDE!</div><div class="stats"><div class="stat destaque"><div class="label">PONTUAÇÃO</div><div class="value" id="fim-pontuacao">0</div></div><div class="stat"><div class="label">MAIOR COMBO</div><div class="value" id="fim-combo">0</div></div><div class="stat"><div class="label">ACERTOS</div><div class="value" id="fim-acertos">0</div></div><div class="stat"><div class="label">ERROS</div><div class="value" id="fim-erros">0</div></div><div class="stat" style="grid-column:1/-1"><div class="label">PRECISÃO</div><div class="value" id="fim-precisao">0%</div></div></div><div class="fim-botoes"><button class="btn primario" id="btn-jogar-novamente">JOGAR NOVAMENTE</button><button class="btn" id="btn-menu-principal">MENU PRINCIPAL</button></div></div></section>
+</div>
+<script>
+(function(){'use strict';
+var CORES=[{id:'azul',hex:'#4C8DFF'},{id:'vermelho',hex:'#FF5468'},{id:'amarelo',hex:'#FFC93C'},{id:'verde',hex:'#3DDC97'}],DIRECOES=['esquerda','direita'];
+var DIFICULDADES={
+facil:{nome:'FÁCIL',inicial:8500,minimo:5500,animInicial:1200,animMinima:700},
+medio:{nome:'MÉDIO',inicial:6000,minimo:4000,animInicial:1000,animMinima:600},
+dificil:{nome:'DIFÍCIL',inicial:4000,minimo:2200,animInicial:750,animMinima:350}
+};
+var dificuldadeAtual='facil';
+var recordes={facil:0,medio:0,dificil:0};
+try{recordes=JSON.parse(localStorage.getItem('coresSetasRecordes')||'{"facil":0,"medio":0,"dificil":0}')||recordes}catch(e){}
+var estado={pontos:0,combo:0,maiorCombo:0,acertos:0,erros:0,recorde:0,aguardandoResposta:false,inicioRodada:0,tempoLimite:6000,rafId:null,setaAtual:null};
+var telas={menu:document.getElementById('screen-menu'),instrucoes:document.getElementById('screen-instrucoes'),jogo:document.getElementById('screen-jogo'),fim:document.getElementById('screen-fim')};
+var elValorPontos=document.getElementById('valor-pontos'),elValorCombo=document.getElementById('valor-combo'),elValorRecorde=document.getElementById('valor-recorde'),elMenuRecorde=document.getElementById('menu-recorde'),elSetaContainer=document.getElementById('seta-container'),elSeta=document.getElementById('seta'),elSetaTexto=document.getElementById('seta-texto'),elAnelProgresso=document.getElementById('anel-progresso'),elFeedback=document.getElementById('feedback-texto'),elAreaCentral=document.querySelector('.area-central');
+var PERIMETRO_ANEL=2*Math.PI*44;elAnelProgresso.style.strokeDasharray=PERIMETRO_ANEL;
+function mostrarTela(nome){Object.keys(telas).forEach(function(k){telas[k].classList.toggle('active',k===nome)})}
+function formatarNumero(n){n=Math.max(0,Math.round(n));var s=String(n);while(s.length<5)s='0'+s;return s}
+var audioCtx=null;
+function getAudioCtx(){if(!audioCtx){var AC=window.AudioContext||window.webkitAudioContext;if(AC)audioCtx=new AC()}return audioCtx}
+function tocarTom(freq,duracao,tipo,volume,atraso){var ctx=getAudioCtx();if(!ctx)return;if(ctx.state==='suspended')ctx.resume();var t0=ctx.currentTime+(atraso||0),osc=ctx.createOscillator(),gain=ctx.createGain();osc.type=tipo||'sine';osc.frequency.setValueAtTime(freq,t0);gain.gain.setValueAtTime(.0001,t0);gain.gain.exponentialRampToValueAtTime(volume||.15,t0+.02);gain.gain.exponentialRampToValueAtTime(.0001,t0+duracao);osc.connect(gain);gain.connect(ctx.destination);osc.start(t0);osc.stop(t0+duracao+.02)}
+function somAcerto(rapido){tocarTom(rapido?660:520,.15,'triangle',.14,0);tocarTom(rapido?990:780,.2,'triangle',.11,.08)}
+function somErro(){tocarTom(200,.3,'sawtooth',.12,0);tocarTom(150,.35,'sawtooth',.1,.06)}
+function explodirParticulas(cor){for(var i=0;i<16;i++){var p=document.createElement('div');p.className='particula';var ang=Math.PI*2*i/16+Math.random()*.3,dist=50+Math.random()*70;p.style.setProperty('--px',Math.cos(ang)*dist+'px');p.style.setProperty('--py',Math.sin(ang)*dist+'px');p.style.background=cor;p.style.boxShadow='0 0 12px '+cor;elAreaCentral.appendChild(p);(function(el){el.addEventListener('animationend',function(){el.remove()})})(p)}}
+function mostrarFeedback(texto,classe){elFeedback.textContent=texto;elFeedback.className='feedback-texto '+classe;void elFeedback.offsetWidth;elFeedback.classList.add('mostrar')}
+function configAtual(){return DIFICULDADES[dificuldadeAtual]}
+function calcularTempoLimite(a){var c=configAtual(),p=Math.min(a/60,1);return c.inicial-(c.inicial-c.minimo)*p}
+function calcularDuracaoAnimacao(a){var c=configAtual(),p=Math.min(a/60,1);return c.animInicial-(c.animInicial-c.animMinima)*p}
+function atualizarDificuldadeUI(){
+var c=configAtual(),e=document.getElementById('valor-dificuldade');
+if(e)e.textContent=c.nome;
+document.getElementById('nome-dificuldade-recorde').textContent=c.nome;
+estado.recorde=recordes[dificuldadeAtual]||0;
+elMenuRecorde.textContent=formatarNumero(estado.recorde);
+}
+function atualizarHud(){elValorPontos.textContent=formatarNumero(estado.pontos);elValorCombo.textContent=String(estado.combo).padStart(2,'0');elValorRecorde.textContent=formatarNumero(recordes[dificuldadeAtual]||0);atualizarDificuldadeUI()}
+function novaRodada(){estado.aguardandoResposta=true;estado.tempoLimite=calcularTempoLimite(estado.acertos);var dur=calcularDuracaoAnimacao(estado.acertos),cor=CORES[Math.floor(Math.random()*CORES.length)],dir=DIRECOES[Math.floor(Math.random()*2)];estado.setaAtual={cor:cor,direcao:dir};elSeta.style.background=cor.hex;elAnelProgresso.style.stroke=cor.hex;elSetaContainer.classList.remove('esquerda');if(dir==='esquerda'){elSetaContainer.classList.add('esquerda');elSetaTexto.textContent='ESQUERDA'}else elSetaTexto.textContent='DIREITA';elSetaContainer.style.setProperty('--dur',dur+'ms');elSetaContainer.classList.remove('entrando');void elSetaContainer.offsetWidth;elSetaContainer.classList.add('entrando');estado.inicioRodada=performance.now();atualizarAnelLoop()}
+function atualizarAnelLoop(){if(estado.rafId)cancelAnimationFrame(estado.rafId);function passo(agora){if(!estado.aguardandoResposta)return;var d=agora-estado.inicioRodada,r=Math.max(0,1-d/estado.tempoLimite);elAnelProgresso.style.strokeDashoffset=PERIMETRO_ANEL*(1-r);elAnelProgresso.style.stroke=r<.2?'#ff5468':estado.setaAtual.cor.hex;if(d>=estado.tempoLimite){registrarResposta(null);return}estado.rafId=requestAnimationFrame(passo)}estado.rafId=requestAnimationFrame(passo)}
+function registrarResposta(resposta){if(!estado.aguardandoResposta)return;estado.aguardandoResposta=false;if(estado.rafId)cancelAnimationFrame(estado.rafId);var correta=!!resposta&&(resposta.direcao===estado.setaAtual.direcao&&resposta.cor===estado.setaAtual.cor.id),dec=performance.now()-estado.inicioRodada;if(correta){var raz=dec/estado.tempoLimite,base,rap=false;if(raz<=.3){base=120;rap=true}else if(raz<=.6)base=80;else base=50;var ganho=Math.round(base*(1+Math.min(estado.combo,15)*.05));estado.pontos+=ganho;estado.combo++;estado.maiorCombo=Math.max(estado.maiorCombo,estado.combo);estado.acertos++;mostrarFeedback(rap?'⭐ +'+ganho:'✓ +'+ganho,'acerto');explodirParticulas(estado.setaAtual.cor.hex);somAcerto(rap);atualizarHud();setTimeout(function(){if(telas.jogo.classList.contains('active'))novaRodada()},400)}else{estado.pontos=Math.max(0,estado.pontos-30);estado.combo=0;estado.erros++;mostrarFeedback(resposta===null?'⏰ TEMPO!':'✗ ERRO!','erro');somErro();atualizarHud();setTimeout(finalizarJogo,700)}}
+document.querySelectorAll('.circulo-resposta').forEach(function(c){c.addEventListener('click',function(){if(!telas.jogo.classList.contains('active'))return;registrarResposta({direcao:this.getAttribute('data-direcao'),cor:this.getAttribute('data-cor')})})});
+document.addEventListener('keydown',function(e){if(!telas.jogo.classList.contains('active'))return;if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();if(estado.setaAtual)registrarResposta({direcao:e.key==='ArrowLeft'?'esquerda':'direita',cor:estado.setaAtual.cor.id})}});
+function iniciarJogo(){estado.pontos=0;estado.combo=0;estado.maiorCombo=0;estado.acertos=0;estado.erros=0;estado.recorde=recordes[dificuldadeAtual]||0;atualizarDificuldadeUI();atualizarHud();mostrarTela('jogo');getAudioCtx();try{if(screen.orientation&&screen.orientation.lock)screen.orientation.lock('landscape').catch(function(){})}catch(e){}novaRodada()}
+function finalizarJogo(){estado.aguardandoResposta=false;if(estado.rafId)cancelAnimationFrame(estado.rafId);mostrarTela('fim');var novo=estado.pontos>(recordes[dificuldadeAtual]||0);
+if(novo){recordes[dificuldadeAtual]=estado.pontos;estado.recorde=estado.pontos;try{localStorage.setItem('coresSetasRecordes',JSON.stringify(recordes))}catch(e){}}
+else estado.recorde=recordes[dificuldadeAtual]||0;document.getElementById('fim-pontuacao').textContent=formatarNumero(estado.pontos);document.getElementById('fim-combo').textContent=estado.maiorCombo;document.getElementById('fim-acertos').textContent=estado.acertos;document.getElementById('fim-erros').textContent=estado.erros;var total=estado.acertos+estado.erros;document.getElementById('fim-precisao').textContent=(total?Math.round(estado.acertos/total*100):0)+'%';document.getElementById('novo-recorde-texto').classList.toggle('mostrar',novo);elMenuRecorde.textContent=formatarNumero(estado.recorde)}
+document.getElementById('btn-jogar').addEventListener('click',iniciarJogo);document.getElementById('btn-jogar-novamente').addEventListener('click',iniciarJogo);document.getElementById('btn-menu-principal').addEventListener('click',function(){mostrarTela('menu')});document.getElementById('btn-sair-jogo').addEventListener('click',function(){estado.aguardandoResposta=false;if(estado.rafId)cancelAnimationFrame(estado.rafId);mostrarTela('menu')});document.getElementById('btn-como-jogar').addEventListener('click',function(){mostrarTela('instrucoes')});document.getElementById('btn-voltar-instrucoes').addEventListener('click',function(){mostrarTela('menu')});
+document.querySelectorAll('.btn-dificuldade').forEach(function(btn){
+btn.addEventListener('click',function(){
+dificuldadeAtual=this.getAttribute('data-dificuldade');
+document.querySelectorAll('.btn-dificuldade').forEach(function(b){b.classList.remove('selecionado')});
+this.classList.add('selecionado');
+atualizarDificuldadeUI();
+});
+});
+atualizarDificuldadeUI();atualizarHud();mostrarTela('menu');
+})();
+</script>
+
+<script id="ativamente-back-navigation">
+(function () {
+  let handling = false;
+
+  function playerIsOpen() {
+    const player = document.getElementById('player') || document.querySelector('.player-modal');
+    return !!player && (
+      player.classList.contains('aberto') ||
+      player.classList.contains('active') ||
+      player.getAttribute('aria-hidden') === 'false' ||
+      getComputedStyle(player).display !== 'none'
+    );
+  }
+
+  function pushBackState() {
+    try { history.pushState({ ativamenteBackGuard: true }, '', location.href); } catch (_) {}
+  }
+
+  function closePlayer() {
+    const closeBtn = document.getElementById('btnClose') ||
+      document.querySelector('[data-close-player], .player-close, .btn-close');
+    if (closeBtn) { closeBtn.click(); return true; }
+    const player = document.getElementById('player') || document.querySelector('.player-modal');
+    if (player) {
+      player.classList.remove('aberto', 'active', 'open');
+      player.setAttribute('aria-hidden', 'true');
+      const frame = player.querySelector('iframe');
+      if (frame) frame.src = '';
+      document.body.style.overflow = '';
+      return true;
+    }
+    return false;
+  }
+
+  window.ativamenteVoltar = function () {
+    const visible = document.querySelector(
+      '.modal.on, .modal.active, .overlay.show, [role="dialog"].show, [role="dialog"].active'
+    );
+    if (visible) {
+      visible.classList.remove('on', 'active', 'show');
+      pushBackState();
+      return;
+    }
+    if (window.parent && window.parent !== window) {
+      window.parent.postMessage({ type: 'ATIVAMENTE_BACK' }, '*');
+      return;
+    }
+    if (history.length > 1) history.back();
+  };
+
+  window.addEventListener('popstate', function () {
+    if (handling) return;
+    handling = true;
+
+    const visible = document.querySelector(
+      '.modal.on, .modal.active, .overlay.show, [role="dialog"].show, [role="dialog"].active'
+    );
+    if (visible) {
+      visible.classList.remove('on', 'active', 'show');
+      pushBackState();
+      handling = false;
+      return;
+    }
+
+    if (window.parent && window.parent !== window) {
+      const accepted = window.confirm('Deseja sair deste jogo e voltar ao menu do Ativamente?');
+      if (accepted) {
+        window.parent.postMessage({ type: 'ATIVAMENTE_BACK' }, '*');
+      } else {
+        pushBackState();
+      }
+    } else if (history.length > 1) {
+      const accepted = window.confirm('Deseja sair desta tela?');
+      if (!accepted) pushBackState();
+    }
+
+    handling = false;
+  });
+
+  window.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape' && window.parent && window.parent !== window) {
+      event.preventDefault();
+      window.ativamenteVoltar();
+    }
+  });
+
+  pushBackState();
+})();
+</script>
+
+</body></html>

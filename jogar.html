@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>Jogando — Ativamente Games</title>
+<style>
+html,body{margin:0;height:100%;background:#0b1d36;color:#fff;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;overflow:hidden}
+header{height:52px;display:flex;align-items:center;gap:10px;padding:0 10px;background:#0f2746;border-bottom:1px solid #ffffff22}
+header button{border:1px solid #ffffff40;background:#ffffff14;color:#fff;border-radius:12px;padding:8px 14px;font-weight:800;font-size:15px;font-family:inherit;cursor:pointer}
+header b{font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+iframe{display:block;width:100%;height:calc(100% - 53px);border:0;background:#fff}
+</style></head><body>
+<header><button id="back">← Jogos</button><b id="t"></b></header>
+<iframe id="f" allow="camera; autoplay; fullscreen; gamepad" allowfullscreen></iframe>
+<script>
+// Abre um jogo do Ativamente dentro do site: jogar.html?g=ativamente/damas.html&t=Damas
+var q=new URLSearchParams(location.search),g=q.get('g')||'',t=q.get('t')||'Jogo';
+document.getElementById('t').textContent=t;document.title=t+' — Ativamente Games';
+if(/^ativamente\/[\w\-\.]+\.html$/.test(g))document.getElementById('f').src=g;else location.href='index.html';
+function sair(){location.href='index.html'}
+document.getElementById('back').onclick=sair;
+// os jogos do Ativamente avisam quando a criança toca em "voltar"
+addEventListener('message',function(e){if(e.data&&e.data.type==='ATIVAMENTE_BACK')sair()});
+</script></body></html>

@@ -1,17 +1,6 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-<script>
-/* Arquivo de teste: imagens e música embutidas. Troca caminhos como "img/x.webp" pelo conteúdo embutido. */
-window.__A={};
-(function(){var A=window.__A;function m(v){if(typeof v!=="string")return v;if(v.indexOf("data:")===0||v.indexOf("blob:")===0)return v;var k=v.replace(/^.*?((img|audio)\/[^?#]*).*$/,"$1");return A[k]||v}
-var di=Object.getOwnPropertyDescriptor(HTMLImageElement.prototype,"src");Object.defineProperty(HTMLImageElement.prototype,"src",{set:function(v){di.set.call(this,m(v))},get:function(){return di.get.call(this)},configurable:true});
-var dm=Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype,"src");Object.defineProperty(HTMLMediaElement.prototype,"src",{set:function(v){dm.set.call(this,m(v))},get:function(){return dm.get.call(this)},configurable:true});
-var sa=Element.prototype.setAttribute;Element.prototype.setAttribute=function(n,v){if(n==="src")v=m(v);return sa.call(this,n,v)};
-try{window.localStorage.getItem("x")}catch(e){var s={};try{Object.defineProperty(window,"localStorage",{value:{getItem:function(k){return k in s?s[k]:null},setItem:function(k,v){s[k]=String(v)},removeItem:function(k){delete s[k]}}})}catch(e2){}}
-})();
-</script>
-
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
 <title>Dança dos Números — Move Mente</title>

@@ -1,0 +1,3 @@
+# ads.txt — Ativamente Games
+# Depois da aprovação do AdSense, apague o "#" da linha de baixo e troque pub-0000000000000000 pelo seu ID (sem o "ca-").
+# google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0

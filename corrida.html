@@ -463,12 +463,13 @@ let running=false,paused=false,mode='gyro',xVel=0,vy=0,jumping=false,falling=fal
 let best=0;try{best=+(localStorage.getItem('bounce3dBest')||0)||0}catch(e){}
 $('best').textContent=best;
 
-function choose(m){mode=m;$('manualChoice').classList.toggle('selected',m==='manual');$('gyroChoice').classList.toggle('selected',m==='gyro');$('swipeChoice').classList.toggle('selected',m==='swipe');$('controls').style.display=m==='swipe'?'none':'';$('camChoice').classList.toggle('selected',m==='camera');
+function choose(m){mode=m;try{localStorage.setItem('moveMenteCtl',m)}catch(e){}$('manualChoice').classList.toggle('selected',m==='manual');$('gyroChoice').classList.toggle('selected',m==='gyro');$('swipeChoice').classList.toggle('selected',m==='swipe');$('controls').style.display=m==='swipe'?'none':'';$('camChoice').classList.toggle('selected',m==='camera');
  $('gyroStatus').textContent=m==='gyro'?'Inclinação: aguardando sensor':m==='camera'?'Câmera · toque aqui para recalibrar':m==='swipe'?'Deslize: ← → faixa · ↑ pula · ↓ abaixa':'Modo manual';
  // Nos modos inclinação e câmera só o par ◀ ▶ some; o botão PULAR continua disponível
  $('pad').style.display=m==='manual'?'flex':'none';
  if(m!=='camera'&&typeof stopCamera==='function')stopCamera()}
-choose('swipe');
+// Jogos de movimento: começa com a câmera; depois lembra o controle escolhido
+choose((function(){try{var c=localStorage.getItem('moveMenteCtl');if(['camera','swipe','manual','gyro'].indexOf(c)>=0)return c}catch(e){}return 'camera'})());
 function pickChar(k){charKey=k;try{localStorage.setItem('moveMenteChar',k)}catch(e){}document.querySelectorAll('.char').forEach(b=>b.classList.toggle('selected',b.dataset.k===k));curFrame=-1}
 document.querySelectorAll('.char').forEach(b=>b.onclick=()=>pickChar(b.dataset.k));pickChar(charKey);
 $('swipeChoice').onclick=()=>choose('swipe');$('laneChoice').onclick=()=>{laneOn=!laneOn;$('laneChoice').classList.toggle('selected',laneOn)};

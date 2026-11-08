@@ -4,7 +4,7 @@
    Enquanto "cliente" estiver vazio, o site mostra anúncios de MENTIRA (modo teste).
    ========================================================= */
 window.ANUNCIOS = {
-  cliente: '',            // seu ID do AdSense, ex.: 'ca-pub-1234567890123456'
+  cliente: 'ca-pub-7687262841277568', // ID do AdSense da Ativamente Games
   slotTopo: '',           // ID do bloco de anúncio do banner do topo (ex.: '1234567890')
   slotRodape: '',         // ID do bloco de anúncio do banner do rodapé
   modoTeste: true,        // true = anúncios de teste do Google (não gera dinheiro). Troque para false quando estiver tudo certo.

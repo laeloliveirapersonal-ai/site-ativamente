@@ -5,8 +5,8 @@
    ========================================================= */
 window.ANUNCIOS = {
   cliente: 'ca-pub-7687262841277568', // ID do AdSense da Ativamente Games
-  slotTopo: '',           // ID do bloco de anúncio do banner do topo (ex.: '1234567890')
-  slotRodape: '',         // ID do bloco de anúncio do banner do rodapé
+  slotTopo: '7977481685',   // bloco "Topo"
+  slotRodape: '2662622001', // bloco "Rodapé"
   modoTeste: true,        // true = anúncios de teste do Google (não gera dinheiro). Troque para false quando estiver tudo certo.
   tudoInfantil: false,    // true = trata TODOS os visitantes como crianças (mais seguro para site infantil)
   partidasGratis: 3,      // partidas grátis por dia em cada jogo

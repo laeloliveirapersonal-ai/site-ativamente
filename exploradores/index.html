@@ -117,6 +117,10 @@ footer{background:var(--noite);color:#9FB4FF;text-align:center;padding:26px 20px
 .fixo{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:20;display:none}
 .fixo .btn{width:100%}
 @media(max-width:700px){.fixo.on{display:block}}
+.eds{display:flex;flex-direction:column;gap:10px}
+.eds .btn{width:100%;min-height:52px;font-size:16px}
+.plano.em-breve{opacity:.8}
+.breve-bt{background:#E3E7F0;color:#5E6984;box-shadow:none;width:100%;cursor:default}
 </style>
 </head>
 <body>
@@ -241,14 +245,14 @@ footer{background:var(--noite);color:#9FB4FF;text-align:center;padding:26px 20px
     <p class="sub">Pagamento único. Você recebe os arquivos na hora, por e-mail, e imprime quantas vezes quiser.</p>
     <div class="planos">
       <div class="plano"><h3>Básico</h3><div class="de">&nbsp;</div><div class="preco"><small>R$</small> 27</div>
-        <ul><li>1 edição à sua escolha</li><li>49 atividades em 3 níveis</li><li>Recortáveis e gabarito</li><li>Certificado</li></ul>
-        <a class="btn azul" data-link="basico" href="#">Quero o Básico</a></div>
+        <ul><li>1 edição à sua escolha (toque na que quiser)</li><li>49 atividades em 3 níveis</li><li>Recortáveis e gabarito</li><li>Certificado</li></ul>
+        <div class="eds"><a class="btn azul ed" data-link="espaco" href="#">1ª Missão Espacial</a><a class="btn azul ed" data-link="floresta" href="#">2ª Aventura na Floresta</a><a class="btn azul ed" data-link="mar" href="#">3ª Missão Fundo do Mar</a></div></div>
       <div class="plano dest"><span class="tag">MAIS ESCOLHIDO</span><h3>Coleção Completa</h3><div class="de">De R$ 81 (3 volumes separados)</div><div class="preco"><small>R$</small> 47</div>
         <ul><li>As 3 edições: 147 atividades</li><li>9 jogos para recortar</li><li>Gabaritos e certificados</li><li>Versão leve para tablet</li><li>Jogo digital de bônus</li><li>Guia de início</li></ul>
         <a class="btn" data-link="completo" href="#">Quero a Coleção Completa</a></div>
-      <div class="plano"><h3>Profissional</h3><div class="de">&nbsp;</div><div class="preco"><small>R$</small> 97</div>
+      <div class="plano em-breve"><h3>Profissional</h3><div class="de">&nbsp;</div><div class="preco"><small>R$</small> 97</div>
         <ul><li>Tudo da Coleção Completa</li><li>Fichas de acompanhamento</li><li>Atividades de movimento</li><li>Licença para escola e consultório</li></ul>
-        <a class="btn azul" data-link="profissional" href="#">Quero o Profissional</a></div>
+        <span class="btn breve-bt">Em breve</span></div>
     </div>
     <div class="garantia"><div class="g"><span><b>7</b>dias</span></div><div><b style="font-size:18px">Garantia de 7 dias</b><br>Se não gostar, peça o reembolso dentro de 7 dias, sem complicação.</div></div>
   </div>
@@ -281,8 +285,10 @@ footer{background:var(--noite);color:#9FB4FF;text-align:center;padding:26px 20px
 <script>
 /* ===== Cole aqui os links de checkout da plataforma (Hotmart, Kiwify, Eduzz...) ===== */
 const LINKS = {
-  basico: '#',
   completo: 'https://pay.hotmart.com/P108457162X',
+  espaco: 'https://pay.hotmart.com/I108460048B',
+  floresta: 'https://pay.hotmart.com/A108460140P',
+  mar: 'https://pay.hotmart.com/W108460182U',
   profissional: '#'
 };
 document.querySelectorAll('[data-link]').forEach(a=>{ const l=LINKS[a.dataset.link]; if(l && l!=='#') a.href=l; });

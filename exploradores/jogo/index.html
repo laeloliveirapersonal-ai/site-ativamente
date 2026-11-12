@@ -372,6 +372,13 @@ img{-webkit-user-drag:none;pointer-events:none}
 .labi{position:relative;border-radius:16px;padding:6px;touch-action:none}
 .lab-ator,.lab-meta{position:absolute;pointer-events:none;transition:left .12s,top .12s}
 .lab-ator img,.lab-meta img{width:100%;height:100%;object-fit:contain}
+.revista.trancada .capa{filter:saturate(.55) brightness(.85)}
+.cadeado{position:absolute;right:10px;top:10px;width:44px;height:44px;border-radius:50%;background:#0008;display:grid;place-items:center;z-index:2}
+.cadeado svg{width:24px;height:24px}
+.desb-capa{width:min(46vw,200px);border-radius:16px;overflow:hidden;margin:10px 0;box-shadow:0 8px 0 rgba(0,0,0,.2)}
+.desb-capa .capa{aspect-ratio:3/4;background-size:cover;background-position:center;position:relative;overflow:hidden}
+.cod{width:100%;font:inherit;font-weight:700;font-size:20px;letter-spacing:1px;text-transform:uppercase;padding:14px 16px;border-radius:14px;border:3px solid #DDE2EE;text-align:center}
+.cod:focus{outline:none;border-color:var(--sol)}
 </style>
 </head>
 <body>
@@ -421,6 +428,11 @@ const ED = {
 };
 const EM_BREVE = [{nome:'Dinossauros', icone:'dino0', cor:'#B5651D'}, {nome:'Fazenda', icone:'faz9', cor:'#5E9A2E'}, {nome:'Música', icone:'mus0', cor:'#6C3FC4'}];
 let EDI = 'espaco', TEMA = ED.espaco;
+/* ===== acesso: 1ª edição livre; demais com código (compradores Hotmart) ou assinatura (app) ===== */
+const HASH_CODIGO = 4271014403;
+function hashTxt(s){ let h=5381; for(const ch of s.toUpperCase().replace(/[^A-Z0-9]/g,'')) h=((h*33)^ch.charCodeAt(0))>>>0; return h; }
+function liberada(id){ return ED[id].num===1 || S.acesso || S.assinante; }
+function tentarCodigo(c){ if(hashTxt(c)===HASH_CODIGO){ S.acesso=true; salvar(); return true; } return false; }
 function usarEdicao(id){ EDI=id; TEMA=ED[id]; }
 
 /* ======================= textos ======================= */
@@ -491,7 +503,7 @@ const NIVEIS = {
 
 /* ======================= armazenamento ======================= */
 const KEY='ativamente_exploradores_v2';
-const PADRAO={som:true, adapta:1, ritmo:1, fs:1, acertos:0, medalhas:[], dias:[], e:{}};
+const PADRAO={som:true, adapta:1, ritmo:1, fs:1, acertos:0, medalhas:[], dias:[], e:{}, acesso:false, assinante:false};
 let S=carregar();
 function carregar(){ try{ const t=JSON.parse(localStorage.getItem(KEY)); return Object.assign(JSON.parse(JSON.stringify(PADRAO)), t||{}); }catch(e){ return JSON.parse(JSON.stringify(PADRAO)); } }
 function salvar(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
@@ -543,16 +555,35 @@ function telaInicio(){
   const box=t.querySelector('.revistas');
   Object.entries(ED).forEach(([id,ed])=>{
     const e=E(id), tot=JOGOS.reduce((s,j)=>s+(e.best[j.id]||0),0);
-    const b=$(`<button class="revista">${capaHTML(id)}<div class="faixa" style="background:${ed.escuro}">${ed.num}${L.edicao}</div>
+    const trava=!liberada(id);
+    const b=$(`<button class="revista ${trava?'trancada':''}">${capaHTML(id)}${trava?'<div class="cadeado"><svg viewBox="0 0 24 24"><path d="M7 10V7a5 5 0 0 1 10 0v3" stroke="#fff" stroke-width="2.4" fill="none"/><rect x="4.5" y="10" width="15" height="11" rx="2.5" fill="#fff"/></svg></div>':''}<div class="faixa" style="background:${ed.escuro}">${ed.num}${L.edicao}</div>
       <div class="rv-txt"><b>${ed.nome}</b>${estrelas(tot>0?1:0,`<em>${tot} / ${JOGOS.length*3}</em>`)}</div></button>`);
-    b.onclick=()=>{ SOM.toque(); abrirEdicao(id); };
+    b.onclick=()=>{ SOM.toque(); trava? telaDesbloquear(id) : abrirEdicao(id); };
     box.appendChild(b);
   });
   EM_BREVE.forEach(eb=> box.appendChild($(`<div class="revista breve"><div class="capa" style="background:${eb.cor}">${img(eb.icone,'breve-ic')}</div><div class="faixa">${L.emBreve}</div><div class="rv-txt"><b>${eb.nome}</b></div></div>`)));
   t.querySelector('[data-a=med]').onclick=()=>{SOM.toque();telaMedalhas();};
   t.querySelector('[data-a=cfg]').onclick=()=>{SOM.toque();telaConfig();};
 }
-function abrirEdicao(id){ usarEdicao(id); if(!E().historia) telaHistoria(()=>{ E().historia=true; salvar(); telaEdicao(); }); else telaEdicao(); }
+function telaDesbloquear(id){
+  const ed=ED[id];
+  const t=trocar(`<div class="tela fundo-${ed.fundo}"></div>`);
+  t.appendChild(topo(ed.nome, ed.num+L.edicao, telaInicio));
+  const c=$(`<div class="res"><div class="desb-capa">${capaHTML(id)}</div>
+    <div class="cartao" style="width:min(92vw,440px);text-align:left">
+      <b style="font-size:20px">Esta edição está trancada</b>
+      <p style="margin:8px 0 14px;color:var(--suave)">A 1ª edição é grátis. Para jogar as outras, use o código que veio no guia de boas-vindas da coleção ou assine o Clube do Caio no app Ativamente.</p>
+      <input class="cod" placeholder="Digite seu código" autocomplete="off" autocapitalize="characters">
+      <p class="msg" style="min-height:22px;margin:8px 0 0;font-weight:700"></p>
+      <button class="btn sol" style="width:100%;margin-top:6px">Desbloquear</button>
+      <a class="btn branco" style="width:100%;margin-top:12px;text-decoration:none" href="https://ativamentegames.com.br/exploradores/">Conhecer a coleção</a></div></div>`);
+  t.appendChild(c);
+  const inp=c.querySelector('.cod'), msg=c.querySelector('.msg');
+  c.querySelector('.btn.sol').onclick=()=>{ if(tentarCodigo(inp.value)){ SOM.nivel(); msg.style.color='var(--certo)'; msg.textContent='Edições liberadas!'; setTimeout(()=>abrirEdicao(id),700); }
+    else { SOM.erro(); msg.style.color='var(--erro)'; msg.textContent='Código não encontrado. Confira e tente de novo.'; } };
+}
+function abrirEdicao(id){
+  if(!liberada(id)) return telaDesbloquear(id); usarEdicao(id); if(!E().historia) telaHistoria(()=>{ E().historia=true; salvar(); telaEdicao(); }); else telaEdicao(); }
 
 function telaHistoria(depois){
   const H=TEMA.historia; let i=0;
@@ -1223,10 +1254,11 @@ function telaConfig(){
   const marca=()=>c.querySelectorAll('.troca').forEach(tr=>{ const k=tr.dataset.k, v=k==='som'?(S.som?1:0):S[k]; tr.querySelectorAll('button').forEach(b=>b.classList.toggle('on', parseFloat(b.dataset.v)===v)); });
   c.querySelectorAll('.troca button').forEach(b=>b.onclick=()=>{ const k=b.parentElement.dataset.k, v=parseFloat(b.dataset.v); if(k==='som') S.som=!!v; else S[k]=v;
     document.documentElement.style.setProperty('--fs',S.fs); salvar(); marca(); SOM.toque(); });
-  c.querySelector('[data-a=apagar]').onclick=()=>{ if(confirm(L.apagarConf)){ const keep={som:S.som,ritmo:S.ritmo,fs:S.fs,adapta:S.adapta}; S=Object.assign(JSON.parse(JSON.stringify(PADRAO)),keep); salvar(); toast('OK'); } };
+  c.querySelector('[data-a=apagar]').onclick=()=>{ if(confirm(L.apagarConf)){ const keep={som:S.som,ritmo:S.ritmo,fs:S.fs,adapta:S.adapta,acesso:S.acesso,assinante:S.assinante}; S=Object.assign(JSON.parse(JSON.stringify(PADRAO)),keep); salvar(); toast('OK'); } };
   marca(); t.appendChild(c);
 }
 
+(function(){ try{ const p=new URLSearchParams(location.search); const c=p.get('codigo'); if(c && tentarCodigo(c)) setTimeout(()=>toast('Edições liberadas!'),500); }catch(e){} })();
 telaInicio();
 
 </script>
